@@ -162,7 +162,7 @@ public class FacebookTestUserStore {
 
     }
 
-    protected String post(String resource, List<NameValuePair> providedQueryParams, List<NameValuePair> providedFormParams, Object... pathParams) {
+    public String post(String resource, List<NameValuePair> providedQueryParams, List<NameValuePair> providedFormParams, Object... pathParams) {
         List<NameValuePair> queryParams = ensureList(providedQueryParams);
         List<NameValuePair> formParams = ensureList(providedFormParams);
 
