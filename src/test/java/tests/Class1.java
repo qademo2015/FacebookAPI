@@ -1,5 +1,6 @@
 package tests;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
@@ -9,6 +10,11 @@ public class Class1 {
 
     @Test
     public void test001() {
+
+        String expected = "right";
+        String actual = "wrong";
+
+        Assert.assertEquals(actual, expected, "string are not equal");
 
     }
 
