@@ -21,6 +21,10 @@ public class Class1 {
     @Test
     public void test002() {
 
+        String expected = "same";
+        String actual = "same";
+
+        Assert.assertEquals(actual, expected, "string are not equal");
     }
 
 
