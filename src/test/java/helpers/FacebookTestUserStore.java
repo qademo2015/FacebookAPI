@@ -143,11 +143,11 @@ public class FacebookTestUserStore {
         return get(resource, new ArrayList<NameValuePair>());
     }
 
-    protected String get(String resource, Object... pathParams) {
+    public String get(String resource, Object... pathParams) {
         return get(resource, null, pathParams);
     }
 
-    protected String get(String resource, List<NameValuePair> providedQueryParams, Object... pathParams) {
+    public String get(String resource, List<NameValuePair> providedQueryParams, Object... pathParams) {
         List<NameValuePair> queryParams = ensureList(providedQueryParams);
 
         if (appAccessToken != null && !containsName(queryParams, ACCESS_TOKEN)) {
