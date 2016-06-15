@@ -1,5 +1,6 @@
 package tests;
 
+import helpers.FacebookTestUserAccount;
 import helpers.FacebookTestUserStore;
 import helpers.Helper;
 import org.apache.http.HttpEntity;
@@ -8,12 +9,14 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.simple.JSONObject;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -27,6 +30,9 @@ public class Class3 {
     private String applicationSecret;
     private FacebookTestUserStore facebookStore;
     private String accessToken;
+    private FacebookTestUserAccount testUser1;
+    private List<FacebookTestUserAccount> createdAccount;
+    private String userid;
 
 
     private static Properties getFacebookConnectionProperties() throws IOException {
@@ -69,6 +75,26 @@ public class Class3 {
     public void test001GetAccessToken() throws IOException, URISyntaxException {
 
         getToken();
+
+    }
+
+    @Test
+    public void test002CreateUser() {
+
+        String jsonResponse = facebookStore.post("/%s/accounts/test-users",
+                helper.buildList("installed", "true", "permissions", "read_stream,publish_actions,user_posts"), null, applicationId);
+
+        JSONObject user = helper.parseJsonObject(jsonResponse);
+
+        testUser1 = new FacebookTestUserAccount(facebookStore, user);
+
+        createdAccount.add(testUser1);
+
+        String userdetails = testUser1.getUserDetails();
+
+        accessToken = testUser1.accessToken();
+
+        userid = user.get("id").toString();
 
     }
 
