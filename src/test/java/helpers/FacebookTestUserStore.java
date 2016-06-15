@@ -1,5 +1,9 @@
 package helpers;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -14,10 +18,6 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +42,7 @@ public class FacebookTestUserStore {
     private final String applicationSecret;
     private final HttpClient client;
     private String appAccessToken;
-    private JSONParser jsonParser;
+    private JsonParser jsonParser;
 
     /**
      * @param applicationId     The Facebook application ID on which test users should be registered.
@@ -53,7 +53,7 @@ public class FacebookTestUserStore {
     public FacebookTestUserStore(String applicationId, String applicationSecret, HttpClient httpClient) {
         this.applicationId = applicationId;
         this.applicationSecret = applicationSecret;
-        this.jsonParser = new JSONParser();
+        this.jsonParser = new JsonParser();
         this.client = httpClient;
     }
 
@@ -83,7 +83,7 @@ public class FacebookTestUserStore {
 
         log.debug(jsonResponse);
 
-        JSONObject user = parseJsonObject(jsonResponse);
+        JsonObject user = parseJsonObject(jsonResponse);
 
         FacebookTestUserAccount facebookAccount = buildFacebookAccount(user);
 
@@ -105,12 +105,12 @@ public class FacebookTestUserStore {
 
         String jsonResponse = get("/%s/accounts/test-users", applicationId);
 
-        JSONObject accounts = parseJsonObject(jsonResponse);
+        JsonObject accounts = parseJsonObject(jsonResponse);
 
         LinkedList<FacebookTestUserAccount> result = new LinkedList<FacebookTestUserAccount>();
-        JSONArray jsonArray = (JSONArray) accounts.get("data");
-        for (Object element : jsonArray) {
-            JSONObject jsonUser = (JSONObject) element;
+        JsonArray jsonArray = accounts.get("data").getAsJsonArray();
+        for (JsonElement element : jsonArray) {
+            JsonObject jsonUser = element.getAsJsonObject();
             result.add(buildFacebookAccount(jsonUser));
         }
 
@@ -147,7 +147,7 @@ public class FacebookTestUserStore {
         return get(resource, null, pathParams);
     }
 
-    protected String get(String resource, List<NameValuePair> providedQueryParams, Object... pathParams) {
+    public String get(String resource, List<NameValuePair> providedQueryParams, Object... pathParams) {
         List<NameValuePair> queryParams = ensureList(providedQueryParams);
 
         if (appAccessToken != null && !containsName(queryParams, ACCESS_TOKEN)) {
@@ -229,18 +229,16 @@ public class FacebookTestUserStore {
         log.error("Error from Facebook: " + e.getMessage());
     }
 
-    private FacebookTestUserAccount buildFacebookAccount(JSONObject user) {
+    private FacebookTestUserAccount buildFacebookAccount(JsonObject user) {
         return new FacebookTestUserAccount(this, user);
     }
 
-    private JSONObject parseJsonObject(String json) {
-        try {
-            return (JSONObject) jsonParser.parse(json);
-        } catch (ParseException e) {
-            throw new IllegalArgumentException("Could not parse JSON: " + json);
-        }
+    private JsonObject parseJsonObject(String json) {
+
+        return jsonParser.parse(json).getAsJsonObject();
 
     }
+
 
     private HttpGet buildGetResource(String resource, List<NameValuePair> queryParams, Object... pathParams) throws URISyntaxException {
         URI uri = getUri(resource, queryParams, pathParams);

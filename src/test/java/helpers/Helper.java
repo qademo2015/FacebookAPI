@@ -1,5 +1,8 @@
 package helpers;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
@@ -7,9 +10,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIUtils;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -57,14 +57,20 @@ public class Helper {
         return result;
     }
 
-    public JSONObject parseJsonObject(String json) {
-        JSONParser jsonParser = new JSONParser();
+    public JsonObject parseJsonObject(String json) {
+        JsonParser jsonParser = new JsonParser();
+
+        JsonObject result = null;
 
         try {
-            return (JSONObject) jsonParser.parse(json);
-        } catch (ParseException e) {
-            throw new IllegalArgumentException("Could not parse JSON: " + json);
+            result = jsonParser.parse(json).getAsJsonObject();
+
+        } catch (JsonSyntaxException e) {
+            e.printStackTrace();
         }
+
+        return result;
+
 
     }
 

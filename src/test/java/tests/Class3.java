@@ -1,5 +1,6 @@
 package tests;
 
+import com.google.gson.JsonElement;
 import helpers.FacebookTestUserAccount;
 import helpers.FacebookTestUserStore;
 import helpers.Helper;
@@ -9,7 +10,6 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
-import org.json.simple.JSONObject;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -85,7 +85,7 @@ public class Class3 {
         String jsonResponse = facebookStore.post("/%s/accounts/test-users",
                 helper.buildList("installed", "true", "permissions", "read_stream,publish_actions,user_posts"), null, applicationId);
 
-        JSONObject user = helper.parseJsonObject(jsonResponse);
+        JsonElement user = helper.parseJsonObject(jsonResponse);
 
         testUser1 = new FacebookTestUserAccount(facebookStore, user);
 
@@ -95,7 +95,7 @@ public class Class3 {
 
         accessToken = testUser1.accessToken();
 
-        userid = user.get("id").toString();
+        userid = user.getAsJsonObject().get("id").toString();
 
     }
 

@@ -1,5 +1,7 @@
 package tests;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import helpers.FacebookTestUserAccount;
 import helpers.FacebookTestUserStore;
 import helpers.Helper;
@@ -9,8 +11,6 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -32,7 +32,7 @@ public class Class2 {
 
     private static FacebookTestUserStore facebookStore; //instance of FacebookTestUserStore where most of required methods are
     private static FacebookTestUserAccount account; // instance of UserAccount
-    private JSONParser parser = new JSONParser(); //using this parser for parsing Jsons
+    private JsonParser parser = new JsonParser(); //using this parser for parsing Jsons
     private List<FacebookTestUserAccount> createdAccounts = new LinkedList<FacebookTestUserAccount>();// saving all created UserAcconts to this List
     private String accessToken = ""; //string for keeping accessToken
 
@@ -114,7 +114,7 @@ public class Class2 {
         //passing all nesserary parameters
         //saving response to a string
 
-        JSONObject user = helper.parseJsonObject(jsonResponse);
+        JsonObject user = helper.parseJsonObject(jsonResponse);
         //parsing string using helper class method, and saving to Json object
 
 

@@ -1,7 +1,7 @@
 package helpers;
 
+import com.google.gson.JsonElement;
 import org.apache.http.NameValuePair;
-import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,9 +16,9 @@ public class FacebookTestUserAccount {
     private static final Logger log = LoggerFactory.getLogger(FacebookTestUserAccount.class);
 
     private final FacebookTestUserStore helper;
-    private JSONObject jsonUser;
+    private JsonElement jsonUser;
 
-    public FacebookTestUserAccount(FacebookTestUserStore helper, JSONObject user) {
+    public FacebookTestUserAccount(FacebookTestUserStore helper, JsonElement user) {
         this.helper = helper;
         this.jsonUser = user;
     }
@@ -137,7 +137,7 @@ public class FacebookTestUserAccount {
     }
 
     public String json() {
-        return jsonUser.toJSONString();
+        return jsonUser.toString();
     }
 
     private String userDataAsString(String data) {
@@ -145,7 +145,8 @@ public class FacebookTestUserAccount {
             return null;
         }
 
-        Object anObject = jsonUser.get(data);
+        String anObject = jsonUser.getAsJsonObject().get(data).getAsString();
+
         return anObject != null ? anObject.toString() : null;
     }
 
