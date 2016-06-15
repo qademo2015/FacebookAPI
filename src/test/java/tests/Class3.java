@@ -2,11 +2,14 @@ package tests;
 
 import helpers.FacebookTestUserStore;
 import helpers.Helper;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,6 +26,7 @@ public class Class3 {
     private String applicationId;
     private String applicationSecret;
     private FacebookTestUserStore facebookStore;
+    private String accessToken;
 
 
     private static Properties getFacebookConnectionProperties() throws IOException {
@@ -61,8 +65,15 @@ public class Class3 {
         facebookStore.deleteAllTestUsers();
     }
 
+    @Test
+    public void test001GetAccessToken() throws IOException, URISyntaxException {
 
-    public void getToken() throws URISyntaxException {
+        getToken();
+
+    }
+
+
+    public void getToken() throws URISyntaxException, IOException {
 
         HttpClient client = new DefaultHttpClient();
 
@@ -70,8 +81,13 @@ public class Class3 {
                 helper.buildList("grant_type", "client_credentials", "client_id",
                         applicationId, "client_secret", applicationSecret));
 
-        HttpResponse
+        HttpResponse response = client.execute(requestBase);
 
+        HttpEntity entity = response.getEntity();
+
+        String prefix = "access_token=";
+
+        accessToken = EntityUtils.toString(entity).substring(prefix.length());
 
     }
 
