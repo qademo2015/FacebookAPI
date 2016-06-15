@@ -16,6 +16,7 @@ import org.testng.annotations.Test;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
@@ -31,7 +32,7 @@ public class Class3 {
     private FacebookTestUserStore facebookStore;
     private String accessToken;
     private FacebookTestUserAccount testUser1;
-    private List<FacebookTestUserAccount> createdAccount;
+    private List<FacebookTestUserAccount> createdAccount = new LinkedList<FacebookTestUserAccount>();
     private String userid;
 
 
