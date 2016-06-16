@@ -10,6 +10,7 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
@@ -25,7 +26,7 @@ public class Class4 {
     private String applicationSecret;
     private FacebookTestUserStore facebookStore;
     private FacebookTestUserAccount testUser1;
-    private List<FacebookTestUserAccount> createdUsers;
+    private List<FacebookTestUserAccount> createdUsers = new LinkedList<FacebookTestUserAccount>();
     private String accessToken;
     private String userId;
 
@@ -71,23 +72,24 @@ public class Class4 {
 
     }
 
-    private void createUser() {
+    private FacebookTestUserAccount createUser() {
 
-        String response = facebookStore.post("%s/accounts/test_users",
-                helper.buildList("installed", "true", "permissions",
-                        "read_stream,publish_actions,user_posts"), null, applicationId);
+        String jsonResponse = facebookStore.post("/%s/accounts/test-users",
+                helper.buildList("installed", "true", "permissions", "read_stream,publish_actions,user_posts"), null, applicationId);
 
-        JsonElement user = helper.parseJsonObject(response);
+        JsonElement user = helper.parseJsonObject(jsonResponse);
 
         testUser1 = new FacebookTestUserAccount(facebookStore, user);
 
         createdUsers.add(testUser1);
 
-        String userDetails = testUser1.getUserDetails();
+        String userdetails = testUser1.getUserDetails();
 
         accessToken = testUser1.accessToken();
 
         userId = user.getAsJsonObject().get("id").getAsString();
+
+        return testUser1;
 
     }
 
