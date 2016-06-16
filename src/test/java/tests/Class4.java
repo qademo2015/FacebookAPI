@@ -1,10 +1,15 @@
 package tests;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import helpers.FacebookTestUserAccount;
 import helpers.FacebookTestUserStore;
 import helpers.Helper;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.junit.AfterClass;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -61,15 +66,68 @@ public class Class4 {
 
         createUser();
 
-
     }
 
 
     @Test
     public void test001() {
 
-        System.out.println("s242");
+        String message = "test message";
 
+        String response = facebookStore.post("/" + userId + "/feed",
+                helper.buildList("message", message, "access_token", accessToken), null, applicationId);
+
+        String getResponse = facebookStore.get("/" + userId + "/feed",
+                helper.buildList("access_token", accessToken), null, applicationId);
+
+        JsonElement feed = parser.parse(getResponse);
+
+        String actualMessage = ((JsonObject) feed).get("data").getAsJsonArray().get(0).getAsJsonObject().get("message").getAsString();
+
+        actualMessage = actualMessage + "241";
+
+        Assert.assertEquals(actualMessage, message);
+
+    }
+
+    @Test
+    public void test002_Change_user_Details() {
+
+        String accountId = testUser1.id();
+
+        List<NameValuePair> params = new LinkedList<NameValuePair>();
+
+        String newName = "gavedName";
+        String newPassword = "parssfdg2435";
+
+        params.add(new BasicNameValuePair("name", newName));
+        params.add(new BasicNameValuePair("password", newPassword));
+
+        String result = facebookStore.post("/%s", params, null, accountId);
+
+        assertNameChange(accountId, "actualName");
+
+    }
+
+    @AfterClass
+    public void tearDown() {
+
+        facebookStore.deleteAllTestUsers();
+    }
+
+    private void assertNameChange(String accountId, String expectedName) {
+
+        List<FacebookTestUserAccount> users = facebookStore.getAllTestUsers();
+
+        for (FacebookTestUserAccount user : users) {
+
+            if (user.id().equals(accountId)) {
+                String userdetails = user.getUserDetails();
+                JsonElement details = parser.parse(userdetails);
+                String actualName = details.getAsJsonObject().get("name").getAsString();
+                Assert.assertEquals(actualName, expectedName);
+            }
+        }
     }
 
     private FacebookTestUserAccount createUser() {
