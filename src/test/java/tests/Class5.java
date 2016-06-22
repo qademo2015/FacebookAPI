@@ -1,5 +1,4 @@
-package tests;
-
+import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import helpers.FacebookTestUserAccount;
 import helpers.FacebookTestUserStore;
@@ -13,11 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
-/**
- * Created by abarabash on 6/21/16.
- */
 public class Class5 {
-
 
     private JsonParser parser;
     private Helper helper;
@@ -25,10 +20,10 @@ public class Class5 {
     private String applicationId;
     private String applicationSecret;
     private FacebookTestUserStore facebookStore;
+    private FacebookTestUserAccount testUser1;
     private List<FacebookTestUserAccount> createdUsers;
-    private FacebookTestUserAccount testUser;
-    private String userId;
     private String accessToken;
+    private String userId;
 
     private static Properties getFacebookConnectionProperties() throws IOException {
 
@@ -47,8 +42,11 @@ public class Class5 {
     public void beforeAllTests() throws IOException {
 
         parser = new JsonParser();
+
         helper = new Helper();
+
         properties = getFacebookConnectionProperties();
+
         applicationId = properties.getProperty("facebook.appId1");
         applicationSecret = properties.getProperty("facebook.appSecret1");
 
@@ -56,13 +54,15 @@ public class Class5 {
 
         facebookStore.deleteAllTestUsers();
 
-        testUser = facebookStore.createTestUser(true, "read_stream,publish_actions,user_photos");
+        createUser();
 
         createdUsers = new LinkedList<FacebookTestUserAccount>();
 
-        createdUsers.add(testUser);
+        createdUsers.add(testUser1);
 
-        userId = testUser.id();
+        userId = testUser1.id();
+
+
     }
 
     @Test
@@ -70,16 +70,53 @@ public class Class5 {
 
         String imageUrl = "https://apdt.com/images/dogs/dog-00033.jpg";
 
-        accessToken = testUser.accessToken();
+
+        accessToken = testUser1.accessToken();
 
         String response = facebookStore.post("/" + userId + "/photos",
                 helper.buildList("url", imageUrl), helper.buildList("access_token", accessToken), applicationId);
 
-        String getRequestResult = facebookStore.get("/" + userId + "/photos",
+        String getResponse = facebookStore.get("/" + userId + "/photos",
                 helper.buildList("access_token", accessToken), null, applicationId);
 
 
     }
 
+    @Test
+    public void test002_Create_album() {
+
+
+        accessToken = testUser1.accessToken();
+
+        String albumName = "NewTestAlbum";
+
+        String response = facebookStore.post("/" + userId + "/albums",
+                helper.buildList("name", albumName), helper.buildList("access_token", accessToken), applicationId);
+
+        String getResponse = facebookStore.get("/" + userId + "/albums",
+                helper.buildList("access_token", accessToken), null, applicationId);
+
+
+    }
+
+    private FacebookTestUserAccount createUser() {
+
+        String jsonResponse = facebookStore.post("/%s/accounts/test-users",
+                helper.buildList("installed", "true", "permissions", "read_stream,publish_actions,user_photos"), null, applicationId);
+
+        JsonElement user = helper.parseJsonObject(jsonResponse);
+
+        testUser1 = new FacebookTestUserAccount(facebookStore, user);
+
+
+        String userdetails = testUser1.getUserDetails();
+
+        accessToken = testUser1.accessToken();
+
+        userId = user.getAsJsonObject().get("id").getAsString();
+
+        return testUser1;
+
+    }
 
 }
