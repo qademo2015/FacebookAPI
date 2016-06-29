@@ -7,6 +7,25 @@
     <groupId>com.bayqatraining.www</groupId>
     <artifactId>JavaAPItest</artifactId>
     <version>1.0-SNAPSHOT</version>
+
+    <build>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.12.4</version>
+                <configuration>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>testng.xml</suiteXmlFile>
+                    </suiteXmlFiles>
+                </configuration>
+            </plugin>
+        </plugins>
+
+    </build>
+
+
     <dependencies>
 
         <dependency>
@@ -50,11 +69,17 @@
             <version>2.2.4</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
-            <groupId>com.jayway.jsonpath</groupId>
-            <artifactId>json-path-assert</artifactId>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>6.9.10</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.7</version>
+        </dependency>
+
 
     </dependencies>
 

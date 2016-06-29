@@ -4,9 +4,9 @@
 
     <test name="Except1Method" preserve-order="false">
         <classes>
-            <class name="tests.Class3">
+            <class name="tests.Class7">
                 <methods>
-                    <include name="test001"/>
+                    <include name="test002"/>
                 </methods>
             </class>
         </classes>
