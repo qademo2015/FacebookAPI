@@ -11,7 +11,7 @@ import org.testng.annotations.Test;
 public class Class7 extends TestBase {
 
 
-    @Test(groups = {"functional"})
+    @Test(priority = 3)
     public void test001_CreateUser() {
 
         FacebookTestUserAccount testUser1 = facebookStore.createTestUser(true, "");
@@ -22,7 +22,7 @@ public class Class7 extends TestBase {
 
     }
 
-    @Test(groups = {"functest", "regression"})
+    @Test(priority = 2)
     public void test002_getProfileFeed() {
 
         FacebookTestUserAccount testUser1 = facebookStore.createTestUser(true, "");
@@ -33,8 +33,7 @@ public class Class7 extends TestBase {
 
     }
 
-
-    @Test(groups = {"functest", "regression"})
+    @Test(priority = 1)
     public void test003_getPassword() {
 
         FacebookTestUserAccount testUser1 = facebookStore.createTestUser(true, "");

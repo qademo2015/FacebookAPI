@@ -2,18 +2,10 @@
 
 <suite name="Suite1" verbose="1">
 
-    <test name="Test1">
-
-        <groups>
-            <run>
-                <include name="regression"/>
-            </run>
-        </groups>
-
-        <classes>
-            <class name="tests.Class7"/>
-        </classes>
-
+    <test name="tests">
+        <packages>
+            <package name="tests"/>
+        </packages>
     </test>
 
 
