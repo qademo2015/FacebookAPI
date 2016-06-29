@@ -117,6 +117,7 @@ public class FacebookTestUserStore {
         log.debug("* Found [{}] accounts on Facebook ", result.size());
 
         return result;
+
     }
 
     public void deleteAllTestUsers() {
