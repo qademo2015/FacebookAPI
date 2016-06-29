@@ -2,20 +2,18 @@
 
 <suite name="Suite1" verbose="1">
 
-    <test name="Except1Method" preserve-order="false">
-        <classes>
-            <class name="tests.Class3">
-                <methods>
-                    <include name="test001"/>
-                </methods>
-            </class>
-        </classes>
-    </test>
+    <test name="Test1">
 
-    <test name="tests">
-        <packages>
-            <package name="emptyPackage"/>
-        </packages>
+        <groups>
+            <run>
+                <include name="regression"/>
+            </run>
+        </groups>
+
+        <classes>
+            <class name="tests.Class7"/>
+        </classes>
+
     </test>
 
 
