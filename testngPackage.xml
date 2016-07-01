@@ -4,16 +4,11 @@
 
     <test name="TestsFromClass8">
 
-        <classes>
+       <packages>
 
-            <class name="anotherTests.Class8" >
+           <package name="anotherTests" />
+       </packages>
 
-
-            </class>
-
-
-
-        </classes>
     </test>
 
 

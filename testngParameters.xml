@@ -2,17 +2,18 @@
 
 <suite name="Suite1" verbose="1">
 
+    <parameter name="appId" value="293249014342744" />
     <test name="TestsFromClass8">
 
         <classes>
 
             <class name="anotherTests.Class8" >
+                <methods>
+                    <include name="test002_getProfileFeed" />
 
+                </methods>
 
             </class>
-
-
-
         </classes>
     </test>
 

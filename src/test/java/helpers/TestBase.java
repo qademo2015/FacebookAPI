@@ -1,6 +1,7 @@
 package helpers;
 
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Parameters;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,15 +34,16 @@ public class TestBase {
         return properties;
     }
 
-    @BeforeClass
-    public void beforeAllTests() throws IOException {
+    @Parameters({ "appId"})
+    @BeforeClass (groups = "defaultGroup")
+    public void beforeAllTests(String appIdFromXML) throws IOException {
 
         Properties properties = getFacebookConnectionProperties();
 
         applicationID = properties.getProperty("facebook.appId1");
         aplicationSecret = properties.getProperty("facebook.appSecret1");
 
-        facebookStore = new FacebookTestUserStore(applicationID, aplicationSecret);
+        facebookStore = new FacebookTestUserStore(appIdFromXML, aplicationSecret);
 
         facebookStore.deleteAllTestUsers();
 

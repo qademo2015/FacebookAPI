@@ -2,12 +2,17 @@
 
 <suite name="Suite1" verbose="1">
 
-    <test name="TestsFromClass8">
+    <test name="OnlyOneMethodFromClass8">
 
         <classes>
 
             <class name="anotherTests.Class8" >
 
+                <methods>
+
+                    <exclude name="test002_getProfileFeed" />
+
+                </methods>
 
             </class>
 
