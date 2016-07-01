@@ -26,6 +26,7 @@ public class Class6 extends TestBase {
         Assert.assertTrue(friends1.contains(testUser2.id()));
         Assert.assertTrue(friends2.contains(testUser1.id()));
 
+
     }
 
     @Test
