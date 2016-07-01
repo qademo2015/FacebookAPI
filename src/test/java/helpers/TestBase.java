@@ -33,7 +33,8 @@ public class TestBase {
         return properties;
     }
 
-    @BeforeClass
+    //@Parameters({ "appId" })
+    @BeforeClass(groups = "defaultGroup")
     public void beforeAllTests() throws IOException {
 
         Properties properties = getFacebookConnectionProperties();

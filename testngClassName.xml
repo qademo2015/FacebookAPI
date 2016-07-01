@@ -1,0 +1,24 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Suite1" verbose="1">
+
+    <test name="Class7andClass8" preserve-order="false">
+
+        <classes>
+
+
+            <class name="tests.Class7">
+
+            </class>
+
+            <class name="otherTests.Class8">
+
+            </class>
+
+
+        </classes>
+
+    </test>
+
+
+</suite>

@@ -1,0 +1,21 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Suite1" verbose="1">
+
+    <parameter name="appId"  value="293249014342744"/>
+    <test name="Regression1">
+        <groups>
+            <run>
+                <exclude name="brokenTests"  />
+                <include name="defaultGroup"  />
+            </run>
+        </groups>
+
+        <packages>
+            <package name="tests"/>
+        </packages>
+    </test>
+
+
+
+</suite>
